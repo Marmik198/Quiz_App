@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head %}
+    <link href="{% static 'accounts/css/sign_up.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+    <div class="login">
+        <section class="section">
+            <div class="section__title">
+                <h2 class="section__description">Login</h2>
+                <h4 class="section__header">
+                    Login to your account, to explore news articles
+                </h4>
+            </div>
+
+            <form class="auth__form" method="post">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button class="btn">Login</button>
+            </form>
+            <hr class="divider">
+            <p class="auth__link__p"> Create an account?  
+                <a href="{% url 'accounts:sign_up' %}" class="auth__link">Sign-Up</a>
+            </p>
+            <p class="auth__link__p"> Forgot your username?  
+                <a href="{% url 'accounts:remind_username' %}" class="auth__link">Remind</a>
+            </p>
+            <p class="auth__link__p"> Forgot your password?  
+                <a href="{% url 'accounts:restore_password' %}" class="auth__link">Restore</a>
+            </p>
+            </p>
+            <p class="auth__link__p"> Resend activation code?  
+                <a href="{% url 'accounts:resend_activation_code' %}" class="auth__link">Resend</a>
+            </p>
+            <p class="auth__link__p"> Visit the home page,   
+                <a href="{% url 'index' %}" class="auth__link">Home</a>
+            </p>
+        </section>
+    </div>
+{% endblock %}

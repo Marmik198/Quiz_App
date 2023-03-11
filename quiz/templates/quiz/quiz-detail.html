@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block head %}
+  <!-- JS -->
+  <script defer src="{% static 'js/script.js' %}"></script>
+{% endblock%}
+
+{% block content %}
+    <header class="header" id="header">
+        <nav class="nav">
+        <a href="#header" class="nav--logo nav--scroll">
+            <img
+            src="{% static 'image/favicon.png' %}"
+            alt="Bankist logo"
+            class="nav__logo"
+            id="logo"
+            />
+        </a>
+        <a class="mob__link" href="{% url 'accounts:log_out' %}">Logout</a>
+        <ul class="nav__links">
+            <li class="nav__item">
+                <a class="nav__link" href="{% url 'index' %}">Home</a>
+            </li>
+            <li class="nav__item">
+                <a class="nav__link" href="{% url 'accounts:change_password' %}">Change Password</a>
+            </li>
+            <li class="nav__item">
+                <a class="nav__link" href="{% url 'accounts:change_email' %}">Change Email</a>
+            </li>
+            <li class="nav__item">
+                <a class="nav__link" href="{% url 'accounts:change_profile' %}">Change Profile</a>
+            </li>
+            <li class="nav__item">
+                <a class="nav__link nav__link--btn" href="{% url 'accounts:log_out' %}">Logout</a>
+            </li>
+        </ul>
+        </nav>
+    </header>
+
+    <section class="section" id="section--1">
+        <div class="section__title">
+            <h2 class="section__description">{{ object.name }} Quiz</h2>
+            <h3 class="section__header__small">Below are the details of the quiz, read carefully before proceeding</h3>
+        </div>  
+        <div class="quiz-info">
+            <ul class="mb-3">
+                <li>The quiz is of {{ object.marks }} marks.</li>
+                <li>There will be {{ object.number_of_questions }} number of questions.</li>
+                <li>Question for different individials may be different.</li>
+                <li>The questions will be jumbled.</li>
+                <li>All questions are compulsory.</li>
+                <li>The quiz can only be attempted once.</li>
+            </ul>
+            <a href="{% url 'question_quiz' object.id %}" class="btn btn-quiz w-25">Start Quiz</a>
+        </div>
+    </section>
+{% endblock %}

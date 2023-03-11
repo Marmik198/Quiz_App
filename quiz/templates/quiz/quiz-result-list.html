@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block head %}
+  <!-- JS -->
+  <script defer src="{% static 'js/script.js' %}"></script>
+{% endblock%}
+
+{% block content %}
+    <header class="header" id="header">
+        <nav class="nav">
+        <a href="{% url 'index' %}" class="nav--logo">
+            <img
+            src="{% static 'image/favicon.png' %}"
+            alt="Bankist logo"
+            class="nav__logo"
+            id="logo"
+            />
+        </a>
+        <a class="mob__link" href="{% url 'accounts:log_out' %}">Logout</a>
+        <ul class="nav__links">
+            {% if request.user.is_superuser %}
+              <li class="nav__item">
+                  <a class="nav__link" href="{% url 'admin:index' %}">Admin Page</a>
+              </li>    
+            {% endif %}
+            <li class="nav__item">
+                <a class="nav__link" href="{% url 'index' %}">Home</a>
+            </li>
+            <li class="nav__item">
+                <a class="nav__link" href="{% url 'accounts:change_password' %}">Change Password</a>
+            </li>
+            <li class="nav__item">
+                <a class="nav__link" href="{% url 'accounts:change_email' %}">Change Email</a>
+            </li>
+            <li class="nav__item">
+                <a class="nav__link" href="{% url 'accounts:change_profile' %}">Change Profile</a>
+            </li>
+            <li class="nav__item">
+                <a class="nav__link nav__link--btn" href="{% url 'accounts:log_out' %}">Logout</a>
+            </li>
+        </ul>
+        </nav>
+    </header>
+    <section class="section" id="section--1">
+        <div class="section__title">
+            <h2 class="section__description">Quiz Results</h2>
+            {% if quizs %}
+              <h3 class="section__header">Below is the list of all the quizzes, you have attempted.</h3>
+            {% else %}
+              <h3 class="section__header">You have not attempted any quiz until now.</h3>
+            {% endif %}
+        </div>  
+        {% if quizs %}
+          <div class="quiz-container">
+            {% for quiz in quizs %}
+              <div class="quiz-card">
+                <h3>{{ quiz.name }}</h3>
+                <p>Questions : {{ quiz.number_of_questions }}</p>
+                <p>Marks : {{ quiz.marks }}</p>
+                <a class="btn btn-quiz" href="{% url 'result_quiz' quiz.id %}">Results</a>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="quiz-container"></div>
+        {% endif %}
+    </section>
+{% endblock %}

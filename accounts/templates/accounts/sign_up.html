@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% load crispy_forms_tags %}
+
+{% block head %}
+    <link href="{% static 'accounts/css/sign_up.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+    <div class="register">
+        <section class="section">
+            <div class="section__title">
+                <h2 class="section__description">Register</h2>
+                <h4 class="section__header">
+                    Create a new account, to explore news articles
+                </h4>
+            </div>
+
+            <form class="auth__form" method="post">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button class="btn">Register</button>
+            </form>
+            <hr class="divider">
+            <p class="auth__link__p"> Already have an account?  
+                <a href="{% url 'accounts:log_in' %}" class="auth__link">Login</a>
+            </p>
+            <p class="auth__link__p"> Visit the home page,   
+                <a href="{% url 'index' %}" class="auth__link">Home</a>
+            </p>
+        </section>
+    </div>
+{% endblock %}
+       

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% load static %}
+
+{% block head %}
+    <link href="{% static 'accounts/css/sign_up.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+    <div class="logout">
+        <section class="section">
+            <div class="section__title">
+                <h2 class="section__description">Logout</h2>
+                <h4 class="section__header">
+                    Thanks for spending some quality time with the site today.
+                </h4>
+            </div>
+
+            <hr class="divider">
+            <p class="auth__link__p"> Login again?  
+                <a href="{% url 'accounts:log_in' %}" class="auth__link">Login</a>
+            </p>
+            <p class="auth__link__p"> Visit the home page,   
+                <a href="{% url 'index' %}" class="auth__link">Home</a>
+            </p>
+        </section>
+    </div>
+{% endblock %}

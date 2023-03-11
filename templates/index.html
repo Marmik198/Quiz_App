@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block head %}
+  <!-- JS -->
+  <script defer src="{% static 'js/script.js' %}"></script>
+{% endblock%}
+
+{% block content %}
+    <header class="header" id="header">
+        <nav class="nav">
+        <a href="{% url 'index' %}" class="nav--logo">
+            <img
+            src="{% static 'image/favicon.png' %}"
+            alt="Bankist logo"
+            class="nav__logo"
+            id="logo"
+            />
+        </a>
+        {% if request.user.is_authenticated %}
+            <a class="mob__link" href="{% url 'accounts:log_out' %}">Logout</a>
+        {% else %}
+            <a class="mob__link" href="{% url 'accounts:log_in' %}">Sign In</a>
+        {% endif %}
+        <ul class="nav__links">
+            {% if request.user.is_authenticated %}
+                {% if request.user.is_superuser %}
+                    <li class="nav__item">
+                        <a class="nav__link" href="{% url 'admin:index' %}">Admin Page</a>
+                    </li>    
+                {% endif %}
+                <li class="nav__item">
+                    <a class="nav__link" href="{% url 'index' %}">Home</a>
+                </li>
+                <li class="nav__item">
+                    <a class="nav__link" href="{% url 'accounts:change_password' %}">Change Password</a>
+                </li>
+                <li class="nav__item">
+                    <a class="nav__link" href="{% url 'accounts:change_email' %}">Change Email</a>
+                </li>
+                <li class="nav__item">
+                    <a class="nav__link" href="{% url 'accounts:change_profile' %}">Change Profile</a>
+                </li>
+                <li class="nav__item">
+                    <a class="nav__link nav__link--btn" href="{% url 'accounts:log_out' %}">Logout</a>
+                </li>
+            {% else %}
+                <li class="nav__item">
+                    <a class="nav__link" href="{% url 'accounts:resend_activation_code' %}">Resend Activation Code</a>
+                </li>
+                <li class="nav__item">
+                    <a class="nav__link" href="{% url 'accounts:restore_password' %}">Restore Password</a>
+                </li>
+                <li class="nav__item">
+                    <a class="nav__link" href="{% url 'admin:index' %}">Admin Login</a>
+                </li>
+                <li class="nav__item">
+                    <a class="nav__link nav__link--btn" href="{% url 'accounts:sign_up' %}">Register</a>
+                </li>
+                <li class="nav__item">
+                    <a class="nav__link nav__link--btn" href="{% url 'accounts:log_in' %}">Sign In</a>
+                </li>
+            {% endif %}
+        </ul>
+        </nav>
+    </header>
+    <section class="section" id="section--1">
+        <div class="section__title">
+            {% if request.user.is_authenticated %}
+                <h2 class="section__description">Welcome {{ request.user.username }}</h2>
+                <h3 class="section__header">Take quizzes and increase your learnings.</h3>
+                <div class="btn-container">
+                    <a class="btn f-btn" href="{% url 'quiz_list' %}">Attempt Quiz</a>
+                    <a class="btn f-btn" href="{% url 'quiz_result' %}">See Results</a>
+                </div>
+            {% else %}
+                <h2 class="section__description">You are a guest</h2>
+                <h3 class="section__header">SignUp to take quizzes and increase your learnings.</h3>
+            {% endif %}
+        </div>
+    </section>
+    <footer class="footer">
+        <ul class="footer__nav">
+        <li class="footer__item">
+            <a class="footer__link" href="#">About</a>
+        </li>
+        <li class="footer__item">
+            <a class="footer__link" href="#">Pricing</a>
+        </li>
+        <li class="footer__item">
+            <a class="footer__link" href="#">Terms</a>
+        </li>
+        <li class="footer__item">
+            <a class="footer__link" href="#">Policy</a>
+        </li>
+        <li class="footer__item">
+            <a class="footer__link" href="#">Careers</a>
+        </li>
+        <li class="footer__item">
+            <a class="footer__link" href="#">Blog</a>
+        </li>
+        <li class="footer__item">
+            <a class="footer__link" href="#">Contact</a>
+        </li>
+        </ul>
+        <img src="{% static 'image/footer.png' %}" alt="Logo" class="footer__logo" />
+        <p class="footer__copyright">
+        <a class="footer__link twitter-link" target="_blank" href="#"
+            >&copy; Copyright Reserved
+        </a>
+        </p>
+    </footer>
+{% endblock %}

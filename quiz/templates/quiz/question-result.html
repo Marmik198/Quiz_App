@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block content %}
+    <section class="section" id="section--1">
+        <div class="section__title">
+            <h2 class="section__description">{{ quiz.name }} Quiz Result</h2>
+            <div class="d-flex flex-column">
+                <h3 class="section__header__very__small">
+                    Marks obtained : 
+                    <span class="marks">{{ marks|floatformat:0 }}</span> out of 
+                    <span class="marks">{{ quiz.marks }}</span>
+                </h3>
+                <h3 class="section__header__very__small d-block">
+                    Correct Questions : 
+                    <span class="marks">{{ correct }}</span> out of 
+                    <span class="marks">{{ quiz.number_of_questions }}</span>
+                </h3>
+            </div>
+        </div>  
+
+        <hr class="w-75 mx-auto mb-5">
+
+        <form class="auth__form" onsubmit=return false>
+            {% csrf_token %}
+            {% for question in questions %}
+                <div class="form__group form-check">
+                    <p class="question">Q {{ forloop.counter }}. <span class="ml-3">{{ question.0.question }}</span></p>
+                    
+                    <input disabled 
+                        class="form-check-input" 
+                        type="radio" 
+                        id="{{ question.0.option1 }}" 
+                        value="{{ 1 }}" 
+                        name="{{ forloop.counter }}">
+                    <label class="ml-4 form-check-label" 
+                        for="{{ question.0.option1 }}">{{ question.0.option1 }}
+                    </label>
+                    <br>
+
+                    <input disabled 
+                        class="form-check-input" 
+                        type="radio" 
+                        id="{{ question.0.option2 }}" 
+                        value="{{ 2 }}" 
+                        name="{{ forloop.counter }}">
+                    <label class="ml-4 form-check-label" 
+                        for="{{ question.0.option2 }}">{{ question.0.option2 }}
+                    </label>
+                    <br>
+                    
+                    {% if question.0.option3 %}
+                        <input disabled 
+                            class="form-check-input" 
+                            type="radio" 
+                            id="{{ question.0.option3 }}" 
+                            value="{{ 3 }}" 
+                            name="{{ forloop.counter }}">
+                        <label class="ml-4 form-check-label" 
+                            for="{{ question.0.option3 }}">{{ question.0.option3 }}
+                        </label>
+                        <br>
+                    {% endif %}
+
+                    {% if question.0.option4 %}
+                        <input disabled 
+                            class="form-check-input" 
+                            type="radio" 
+                            id="{{ question.0.option4 }}" 
+                            value="{{ 4 }}" 
+                            name="{{ forloop.counter }}">
+                        <label class="ml-4 form-check-label" 
+                            for="{{ question.0.option4 }}">{{ question.0.option4 }}
+                        </label>
+                    {% endif %}
+                    {% if question.2 %}
+                        <div class="form-response bgg">
+                            <h4>Your chosen option "{{ question.1 }}" is Correct!!</h4>
+                        </div>  
+                    {% else %}
+                        <div class="form-response bgr">
+                            <h4>Your chosen option "{{ question.1 }}" is Incorrect!!</h4>
+                            <h4>Correct Answer is option "{{ question.0.answer }}"</h4>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </form>
+    </section>
+{% endblock %}
+
+{% block jsbody %}
+    <script>
+    </script>
+{% endblock %}

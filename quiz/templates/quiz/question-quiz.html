@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block content %}
+    <section class="section" id="section--1">
+        <div class="section__title">
+            <h2 class="section__description">{{ quiz.name }} Quiz</h2>
+            <div class="d-flex justify-content-center">
+              <h3 class="section__header__very__small">Number of questions : {{ quiz.number_of_questions }}</h3>
+              <h3 class="section__header__very__small ml-5">Number of marks : {{ quiz.marks }}</h3>
+            </div>
+        </div>  
+
+        <hr class="w-75 mx-auto mb-5">
+
+        <form class="auth__form" method="post" action="{% url 'submit_form' %}">
+            {% csrf_token %}
+            {% for question in questions %}
+                <div class="form__group form-check">
+                    <p class="question">Q {{ forloop.counter }}. <span class="ml-3">{{ question.question }}</span></p>
+                    
+                    <input required class="form-check-input" 
+                        type="radio" id="{{ question.option1 }}" value="{{ 1 }}" name="{{ forloop.counter }}">
+                    <label class="ml-4 form-check-label" for="{{ question.option1 }}">{{ question.option1 }}</label>
+                    <br>
+
+                    <input required class="form-check-input" 
+                        type="radio" id="{{ question.option2 }}" value="{{ 2 }}" name="{{ forloop.counter }}">
+                    <label class="ml-4 form-check-label" for="{{ question.option2 }}">{{ question.option2 }}</label>
+                    <br>
+                    
+                    {% if question.option3 %}
+                        <input required class="form-check-input" 
+                            type="radio" id="{{ question.option3 }}" value="{{ 3 }}" name="{{ forloop.counter }}">
+                        <label class="ml-4 form-check-label" for="{{ question.option3 }}">{{ question.option3 }}</label>
+                        <br>
+                    {% endif %}
+
+                    {% if question.option4 %}
+                        <input required class="form-check-input" 
+                            type="radio" id="{{ question.option4 }}" value="{{ 4 }}" name="{{ forloop.counter }}">
+                        <label class="ml-4 form-check-label" for="{{ question.option4 }}">{{ question.option4 }}</label>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <div class="d-flex justify-content-center mt-5 form-btn-container">
+                <button class="btn d-block mr-5" onclick="resetForm()" type="reset">Clear Responses</button>
+                <button class="btn d-block ml-5" id="submit-form" type="submit">Submit Quiz</button>
+            </div>
+        </form>
+    </section>
+{% endblock %}
+
+{% block jsbody %}
+    <script>
+        $('#submit-form').on("click", function(){
+            let valid = true;
+            $('[required]').each(function() {
+                if ($(this).is(':invalid') || !$(this).val()) valid = false;
+            })
+            if (!valid) $('.form-btn-container').before("<p class=\"error-form\">Please fill all the fields to submit!</p>");
+        })
+
+        function resetForm(e) {
+            e.preventDefault();
+            let element = document.querySelector(".auth__form");
+            element.reset()
+        }
+    </script>
+{% endblock %}
