@@ -16,9 +16,20 @@ class QuizListView(LoginRequiredMixin, ListView):
     template_name = 'quiz/quiz-list.html'
     context_object_name = "quizs"
 
+def get_context_data(self, **kwargs):
+    context = super(QuizListView, self).get_context_data(**kwargs)
+    context['title'] = 'Quiz'
+    return context
+    
+
 class QuizDetailView(LoginRequiredMixin, DetailView):
     model = Quiz
     template_name = 'quiz/quiz-detail.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super(QuizDetailView, self).get_context_data(**kwargs)
+        context['title'] = 'Quiz'
+        return context
 
 # QuestionQuiz Views
 @login_required
@@ -47,8 +58,9 @@ def question_quiz_view(request, pk):
 
         request.session['quiz'] = quiz.id  
         request.session['questions'] = questId  
+        title = 'Quiz' + quiz.name
         
-        return render(request, "quiz/question-quiz.html", {'quiz':quiz, 'questions':questions})
+        return render(request, "quiz/question-quiz.html", {'quiz':quiz, 'questions':questions, 'title':title})
 
 def submit_form(request):
     user = request.user
@@ -83,6 +95,12 @@ class QuizResultListView(LoginRequiredMixin, ListView):
         for key in quizset:
             quizs.append(Quiz.objects.filter(id=key).first())
         return quizs
+    
+    
+    def get_context_data(self, **kwargs):
+        context = super(QuizResultListView, self).get_context_data(**kwargs)
+        context['title'] = 'Quiz Results'
+        return context
 
 # Quiz Result View
 @login_required
@@ -103,12 +121,15 @@ def result_quiz_view(request, pk):
 
         question = Question.objects.filter(id=i.question_id).first()
         questions.append([question, i.response, i.isCorrect])
+    
+    title = 'Result' + quiz.name
 
     context = {
         'quiz':quiz, 
         'marks':marks,
         'correct':correct,
-        'questions':questions, 
+        'questions':questions,
+        'title': title
     }
 
     return render(request, 'quiz/question-result.html', context)

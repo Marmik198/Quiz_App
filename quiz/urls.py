@@ -8,5 +8,5 @@ urlpatterns = [
     path('results/', QuizResultListView.as_view(), name='quiz_result'),
     path('<int:pk>/results/', views.result_quiz_view, name='result_quiz'),
     path('<int:pk>/questions/', views.question_quiz_view, name='question_quiz'),
-    path('submit_form/', views.submit_form, name='submit_form'),
+    path('submit-form/', views.submit_form, name='submit_form'),
 ]

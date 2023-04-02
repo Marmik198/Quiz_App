@@ -31,7 +31,11 @@
     {% endblock %}
 
     <!-- Title -->
-    <title>Quiz Application</title>
+    {% if title %}
+      <title>{{title}} : Quiz Application</title>
+    {% else %}
+      <title>Quiz Application</title>
+    {% endif %}
   </head>
 
   <body>

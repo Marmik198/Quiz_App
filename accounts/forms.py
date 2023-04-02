@@ -119,7 +119,7 @@ class ResendActivationCodeForm(UserCacheMixin, forms.Form):
         activation = user.code
         if not activation:
             raise ValidationError(_('Activation code not found.'))
-        now_with_shift = timezone.now() - timedelta(mins=30)
+        now_with_shift = timezone.now() - timedelta(minutes=30)
         if user.created_at > now_with_shift:
             raise ValidationError(_('Activation code has already been sent. You can request a new code in 30 mins.'))
         self.user_cache = user
@@ -138,7 +138,7 @@ class ResendActivationCodeViaEmailForm(UserCacheMixin, forms.Form):
         activation = user.code
         if not activation:
             raise ValidationError(_('Activation code not found.'))
-        now_with_shift = timezone.now() - timedelta(mins=30)
+        now_with_shift = timezone.now() - timedelta(minutes=30)
         if user.created_at > now_with_shift:
             raise ValidationError(_('Activation code has already been sent. You can request a new code in 30 mins.'))
         self.user_cache = user

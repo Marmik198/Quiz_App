@@ -37,12 +37,17 @@ User = get_user_model()
 class IndexPageView(TemplateView):
     template_name = 'index.html'
 
+    def get_context_data(self, **kwargs):
+        context =  super(IndexPageView, self).get_context_data(**kwargs)
+        context['title'] = "Home"
+        return context
+
 class GuestOnlyView(View):
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return redirect(settings.LOGIN_REDIRECT_URL)
         return super().dispatch(request, *args, **kwargs)
-
+    
 class LogInView(GuestOnlyView, FormView):
     template_name = 'accounts/log_in.html'
 
@@ -74,6 +79,11 @@ class LogInView(GuestOnlyView, FormView):
         if url_is_safe:
             return redirect(redirect_to)
         return redirect(settings.LOGIN_REDIRECT_URL)
+    
+    def get_context_data(self, **kwargs):
+        context = super(LogInView, self).get_context_data(**kwargs)
+        context['title'] = 'Login'
+        return context
 
 class SignUpView(GuestOnlyView, FormView):
     template_name = 'accounts/sign_up.html'
@@ -105,6 +115,11 @@ class SignUpView(GuestOnlyView, FormView):
             login(request, user)
             messages.success(request, _('You are successfully signed up!'))
         return redirect('accounts:log_in')
+    
+    def get_context_data(self, **kwargs):
+        context = super(SignUpView, self).get_context_data(**kwargs)
+        context['title'] = 'Register'
+        return context
 
 class ActivateView(View):
     @staticmethod
@@ -130,11 +145,15 @@ class ResendActivationCodeView(GuestOnlyView, FormView):
         act = MyUser()
         act = user
         act.code = code
-        print(vars(act))
         act.save()
         send_activation_email(self.request, user.email, code)
         messages.success(self.request, _('A new activation code has been sent to your email address.'))
         return redirect('accounts:resend_activation_code')
+    
+    def get_context_data(self, **kwargs):
+        context = super(ResendActivationCodeView, self).get_context_data(**kwargs)
+        context['title'] = 'Resend Authentication Code'
+        return context
 
 class RestorePasswordView(GuestOnlyView, FormView):
     template_name = 'accounts/restore_password.html'
@@ -153,6 +172,11 @@ class RestorePasswordView(GuestOnlyView, FormView):
             uid = uid.decode()
         send_reset_password_email(self.request, user.email, token, uid)
         return redirect('accounts:restore_password_done')
+    
+    def get_context_data(self, **kwargs):
+        context = super(RestorePasswordView, self).get_context_data(**kwargs)
+        context['title'] = 'Restore Password'
+        return context
 
 class ChangeProfileView(LoginRequiredMixin, FormView):
     template_name = 'accounts/profile/change_profile.html'
@@ -172,6 +196,12 @@ class ChangeProfileView(LoginRequiredMixin, FormView):
         user.save()
         messages.success(self.request, _('Profile data has been successfully updated.'))
         return redirect('accounts:change_profile')
+        
+    def get_context_data(self, **kwargs):
+        context = super(ChangeProfileView, self).get_context_data(**kwargs)
+        context['title'] = 'Change Profile'
+        return context
+
 
 class ChangeEmailView(LoginRequiredMixin, FormView):
     template_name = 'accounts/profile/change_email.html'
@@ -202,6 +232,11 @@ class ChangeEmailView(LoginRequiredMixin, FormView):
             user.save()
             messages.success(self.request, _('Email successfully changed.'))
         return redirect('accounts:change_email')
+    
+    def get_context_data(self, **kwargs):
+        context = super(ChangeEmailView, self).get_context_data(**kwargs)
+        context['title'] = 'Change Email'
+        return context
 
 class ChangeEmailActivateView(View):
     @staticmethod
@@ -222,6 +257,11 @@ class RemindUsernameView(GuestOnlyView, FormView):
         send_forgotten_username_email(user.email, user.username)
         messages.success(self.request, _('Your username has been successfully sent to your email.'))
         return redirect('accounts:remind_username')
+    
+    def get_context_data(self, **kwargs):
+        context = super(RemindUsernameView, self).get_context_data(**kwargs)
+        context['title'] = 'Remind Username'
+        return context
 
 class ChangePasswordView(BasePasswordChangeView):
     template_name = 'accounts/profile/change_password.html'
@@ -231,6 +271,11 @@ class ChangePasswordView(BasePasswordChangeView):
         login(self.request, user)
         messages.success(self.request, _('Your password was changed.'))
         return redirect('accounts:change_password')
+    
+    def get_context_data(self, **kwargs):
+        context = super(ChangePasswordView, self).get_context_data(**kwargs)
+        context['title'] = 'Restore Password'
+        return context
 
 class RestorePasswordConfirmView(BasePasswordResetConfirmView):
     template_name = 'accounts/restore_password_confirm.html'
@@ -239,9 +284,24 @@ class RestorePasswordConfirmView(BasePasswordResetConfirmView):
         form.save()
         messages.success(self.request, _('Your password has been set. You may go ahead and log in now.'))
         return redirect('accounts:log_in')
+    
+    def get_context_data(self, **kwargs):
+        context = super(RestorePasswordConfirmView, self).get_context_data(**kwargs)
+        context['title'] = 'Restore Password'
+        return context
 
 class RestorePasswordDoneView(BasePasswordResetDoneView):
     template_name = 'accounts/restore_password_done.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(RestorePasswordDoneView, self).get_context_data(**kwargs)
+        context['title'] = 'Restore Password'
+        return context
+
 class LogOutView(LoginRequiredMixin, BaseLogoutView):
     template_name = 'accounts/log_out.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(LogOutView, self).get_context_data(**kwargs)
+        context['title'] = 'LogOut'
+        return context
