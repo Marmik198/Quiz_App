@@ -495,15 +495,17 @@ h4 {
   .footer__logo {
     height: 5rem;
   }
+  .footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
 }
 
 /*  */
 @media screen and (max-width: 900px) {
   .footer {
     padding: 6rem 1.5rem;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
   }
 
   .quiz-card {
@@ -517,9 +519,7 @@ h4 {
 /*  */
 @media screen and (max-width: 550px) {
   .footer {
-    padding: 6rem 1.5rem;
     position: relative;
-    width: 100%;
   }
 
   .alert {

@@ -34,17 +34,12 @@ python manage.py makemigrations
 python manage.py migrate
 ```
 
-7. Again on terminal run,
-```
-python manage.py migrate jet
-```
-
-8. Create a superuser by running this command
+7. Create a superuser by running this command
 ```
 python manage.py createsuperuser
 ```
 
-9. Atlast your application is ready to run, run
+8. Atlast your application is ready to run, run
 ```
 python manage.py runserver
 ```
