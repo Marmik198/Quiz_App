@@ -7,7 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView
-from .models import Quiz, Question, QuestionQuiz, Response
+from .models import Quiz, Question, QuestionQuiz, QuizResponse, Response
 
 
 # Quiz Views
@@ -75,7 +75,16 @@ def submit_form(request):
 
         response = Response(user=user, quiz=quiz, question=question, response=answer, isCorrect=isCorrect)
         response.save()
-
+    
+    responses = Response.objects.filter(user=request.user, quiz=quiz)
+    marks_per_question = quiz.marks / quiz.number_of_questions
+    marks = 0
+    for i in responses:
+        if (i.isCorrect):
+            marks += marks_per_question
+    quiz_response = QuizResponse(user=user, quiz=quiz, total_marks=quiz.marks, obtained_marks=marks)
+    quiz_response.save()
+    
     messages.success(request, _('Your test has been submitted successfully!'))
     return redirect('index')
 

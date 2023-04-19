@@ -38,3 +38,12 @@ class Response(models.Model):
 
     def __str__(self):
         return f'{self.user} Response'
+    
+class QuizResponse(models.Model):
+    user = models.ForeignKey("accounts.User", on_delete=models.CASCADE, null=True)
+    quiz = models.ForeignKey("Quiz", on_delete=models.CASCADE, null=True)
+    total_marks = models.IntegerField()
+    obtained_marks = models.IntegerField()
+
+    def __str__(self):
+        return f'{self.user} Quiz Response'
